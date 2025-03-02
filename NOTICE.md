@@ -1,4 +1,4 @@
-NOTICE
+## NOTICE
 
 This project includes components from the following third-party software:
 
