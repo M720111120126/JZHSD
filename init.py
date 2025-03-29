@@ -10,7 +10,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import json, sys, urllib.request, hashlib, time, yara, shutil, psutil, ctypes, win32gui_struct, win32gui
+import json, sys, urllib.request, hashlib, time, yara, shutil, psutil, ctypes, win32gui_struct, win32gui, os
 import threading, urllib.parse, numpy, onnxruntime, pefile, urllib.parse, subprocess, win32api, win32con
 import tkintertools as tkt
 from pefile import *
@@ -1198,6 +1198,8 @@ for root_jiazai, dirs, files in os.walk(data_path):
     for file in files:
         file_path = os.path.join(root_jiazai, file).replace("/", "\\")
         rules.load_rules(file_path)
+data_path = appdata_path + "\\Local\\mlnet-resources\\Text\\Sswe"
+shutil.copy2(jzhsd_dir + "\\sentiment.emd", appdata_path + "\\Local\\mlnet-resources\\Text\\Sswe\\sentiment.emd")
 def AntiVirus_file(f_path, online=online):
     print(f_path.replace("/", "\\"))
     print(Viruses_White_exe)
