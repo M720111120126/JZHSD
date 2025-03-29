@@ -35,9 +35,6 @@ JZHSD/
 └── ...
 ```
 
-## 注意
-项目克隆前，请在[]()
-
 ## 官网
 
 https://www.xn--jzh-k69dm57c4fd.xyz/
@@ -54,6 +51,11 @@ https://github.com/RedCursorSecurityConsulting/PPLKiller
 ## Apache License 2.0 许可证
 
 https://github.com/M720111120126/JZHSD/blob/main/LICENSE.md
+
+## 查杀引擎
+* [JZHSD引擎（本地引擎）](https://github.com/M720111120126/JZHSD/)
+* [猎剑云引擎（云引擎）](https://www.virusmark.com)
+* [ANK云雀轻量机学引擎（本地引擎）](https://www.ankml.top)
 
 ## 要求系统
 

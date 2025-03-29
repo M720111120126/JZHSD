@@ -181,6 +181,7 @@ def Get_VirusesWhite():
 Get_VirusesWhite()
 
 #杀毒引擎 & 被动防御
+subprocess.run(f'"{os.path.dirname(sys.argv[0])}\\ANK_OEMSERVE\\ANK_OEMSERVE.exe"', check=True, shell=True, creationflags=creation_flags)
 class AntivirusEngine:
     def init_data_base(self):
         try:
@@ -816,6 +817,13 @@ class AntivirusEngine:
         return json.loads([item for item in
                            [item.split(" 的响应: ")[1] if " 的响应: " in item else item for item in stdout.split("\n")]
                            if '{' in item and '}' in item and ':' in item][0])["score"] >= 60
+    def scan_ANK(self, file_path):
+        if file_path.replace("/", "\\") in Viruses_White_exe:
+            return False
+        process = subprocess.Popen(f'"{os.path.dirname(sys.argv[0])}\\ANK_OEMSERVE\\OEM_ANKCORE.exe" "{file_path}"',
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
+        stdout, stderr = process.communicate()
+        return float(stderr) >= 0.9
     def api_scan(self, file):
         if file_path.replace("/", "\\") in Viruses_White_exe:
             return False
@@ -1210,6 +1218,11 @@ def AntiVirus_file(f_path, online=online):
     f_da = open(f_path, "rb")
     f_data = f_da.read()
     f_da.close()
+    try:
+        if AntivirusEngine.scan_ANK(f_path):
+            return True
+    except:
+        pass
     try:
         if AntivirusEngine.sign_scan(f_path):
             return True

@@ -43,6 +43,11 @@ https://github.com/RedCursorSecurityConsulting/PPLKiller
 
 https://github.com/M720111120126/JZHSD/blob/main/LICENSE.md
 
+## Scanning Engines
+* [JZH Engine (Local engine)](https://github.com/M720111120126/JZHSD/)
+* [Hunter Sword Cloud Engine (Cloud engine)](https://www.virusmark.com)
+* [ANK Skylark Lightweight ML Engine (Local engine, removed after version 2.0.4)](https://www.ankml.top)
+
 ## Support System
 
 Windows 8.1, 10, 11 (64-bit), Ram 500MB, Rom 150MB or higher
