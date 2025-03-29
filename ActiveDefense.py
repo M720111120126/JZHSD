@@ -274,6 +274,7 @@ def PreventVirusStartup(process):
     root.mainloop()
 
 #杀毒引擎 & 被动防御
+subprocess.run(f'"{os.path.dirname(sys.argv[0])}\\ANK_OEMSERVE\\ANK_OEMSERVE.exe"', check=True, shell=True, creationflags=creation_flags)
 class AntivirusEngine:
     def init_data_base(self):
         try:
@@ -909,6 +910,13 @@ class AntivirusEngine:
         return json.loads([item for item in
                            [item.split(" 的响应: ")[1] if " 的响应: " in item else item for item in stdout.split("\n")]
                            if '{' in item and '}' in item and ':' in item][0])["score"] >= 60
+    def scan_ANK(self, file_path):
+        if file_path.replace("/", "\\") in Viruses_White_exe:
+            return False
+        process = subprocess.Popen(f'"{os.path.dirname(sys.argv[0])}\\ANK_OEMSERVE\\OEM_ANKCORE.exe" "{file_path}"',
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
+        stdout, stderr = process.communicate()
+        return float(stderr) >= 0.9
     def api_scan(self, file):
         if file_path.replace("/", "\\") in Viruses_White_exe:
             return False
@@ -1262,19 +1270,37 @@ class DLScan:
                     with open(file_path, 'rb') as file:
                         match_data[ftype] = file.read()
         return match_data
-jzhsd_dir = os.path.dirname(sys.argv[0].replace("\\", "/"))
+jzhsd_dir = os.path.dirname(sys.argv[0])
 model = DLScan()
 rules = YRScan()
+appdata_path = os.getenv('AppData')
 data_path = os.path.join(jzhsd_dir, "Engine/Model")
+if not os.path.isdir(appdata_path + "\\jzh"):
+    os.mkdir(appdata_path + "\\jzh")
+    os.mkdir(appdata_path + "\\jzh\\Engine")
+    os.mkdir(appdata_path + "\\jzh\\Engine\\Model")
+    os.mkdir(appdata_path + "\\jzh\\Engine\\Rules")
+for root_jiazai, dirs, files in os.walk(data_path):
+    for file in files:
+        file_path = os.path.join(root_jiazai, file)
+        shutil.copy2(file_path, appdata_path + "\\jzh" + file_path.replace(jzhsd_dir, ""))
+data_path = os.path.join(jzhsd_dir, "Engine/Rules")
+for root_jiazai, dirs, files in os.walk(data_path):
+    for file in files:
+        file_path = os.path.join(root_jiazai, file).replace("/", "\\")
+        shutil.copy2(file_path, appdata_path + "\\jzh" + file_path.replace(jzhsd_dir, ""))
+data_path = appdata_path + "\\jzh" + "Engine\\Model"
 for root_jiazai, dirs, files in os.walk(data_path):
     for file in files:
         file_path = os.path.join(root_jiazai, file)
         model.load_model(file_path)
-data_path = os.path.join(jzhsd_dir, "Engine/Rules")
+data_path = appdata_path + "\\jzh" + "Engine\\Rules"
 for root_jiazai, dirs, files in os.walk(data_path):
     for file in files:
-        file_path = os.path.join(root_jiazai, file)
+        file_path = os.path.join(root_jiazai, file).replace("/", "\\")
         rules.load_rules(file_path)
+data_path = appdata_path + "\\Local\\mlnet-resources\\Text\\Sswe"
+shutil.copy2(jzhsd_dir + "\\sentiment.emd", appdata_path + "\\Local\\mlnet-resources\\Text\\Sswe\\sentiment.emd")
 def AntiVirus_file(f_path, online=online):
     print(f_path.replace("/", "\\"))
     print(Viruses_White_exe)
@@ -1285,6 +1311,11 @@ def AntiVirus_file(f_path, online=online):
     f_da = open(f_path, "rb")
     f_data = f_da.read()
     f_da.close()
+    try:
+        if AntivirusEngine.scan_ANK(f_path):
+            return True
+    except:
+        pass
     try:
         if AntivirusEngine.sign_scan(f_path):
             return True
