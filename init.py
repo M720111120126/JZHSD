@@ -10,8 +10,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import json, sys, urllib.request, hashlib, time, yara, shutil, psutil, ctypes, win32gui_struct, win32gui, os
-import threading, urllib.parse, numpy, onnxruntime, pefile, urllib.parse, subprocess, win32api, win32con
+import json, sys, urllib.request, hashlib, time, yara, shutil, psutil, ctypes, win32gui_struct, win32gui
+import threading, urllib.parse, numpy, onnxruntime, pefile, urllib.parse, subprocess, win32api, win32con, os
 import tkintertools as tkt
 from pefile import *
 from hashlib import md5

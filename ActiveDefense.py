@@ -1,5 +1,5 @@
 import json, sys, urllib.request, hashlib, time, yara, psutil, ctypes, shutil
-import urllib.parse, numpy, onnxruntime, pefile, urllib.parse, subprocess
+import urllib.parse, numpy, onnxruntime, pefile, urllib.parse, subprocess, os
 from pefile import *
 from hashlib import md5
 import xml.etree.ElementTree as et
