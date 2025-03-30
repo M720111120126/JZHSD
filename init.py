@@ -44,6 +44,11 @@ if not ide:
     TrustedInstaller()
 
 # 启动主防 & 显示加载界面
+def ANK_OEMSERVE_run():
+    subprocess.run(f'"{os.path.dirname(sys.argv[0])}\\ANK_OEMSERVE\\ANK_OEMSERVE.exe"', check=True, shell=True, cwd=f'{os.path.dirname(sys.argv[0])}\\ANK_OEMSERVE', creationflags=subprocess.CREATE_NO_WINDOW)
+ANK_OEMSERVE_run_threading = threading.Thread(target=ANK_OEMSERVE_run)
+ANK_OEMSERVE_run_threading.daemon = True
+ANK_OEMSERVE_run_threading.start()
 def OpenLoadingScreen():
     LoadingScreen = open("4.txt", "w")
     LoadingScreen.write("1")
@@ -103,10 +108,11 @@ for proc in psutil.process_iter(['pid', 'name', 'exe']):
     try:
         exe = proc.info['exe']
         if ide:
-            if "python" in os.path.basename(exe):
+            if "python" in os.path.basename(exe) or "ANK_OEMSERVE" in os.path.basename(exe):
+                print(os.path.basename(exe))
                 on_rtcore64(proc.pid)
         else:
-            if os.path.basename(sys.argv[0]) == os.path.basename(exe):
+            if os.path.basename(sys.argv[0]) == os.path.basename(exe) or "ANK_OEMSERVE" in os.path.basename(exe):
                 on_rtcore64(proc.pid)
     except:
         pass
@@ -181,7 +187,6 @@ def Get_VirusesWhite():
 Get_VirusesWhite()
 
 #杀毒引擎 & 被动防御
-subprocess.run(f'"{os.path.dirname(sys.argv[0])}\\ANK_OEMSERVE\\ANK_OEMSERVE.exe"', check=True, shell=True, creationflags=creation_flags)
 class AntivirusEngine:
     def init_data_base(self):
         try:
@@ -821,7 +826,7 @@ class AntivirusEngine:
         if file_path.replace("/", "\\") in Viruses_White_exe:
             return False
         process = subprocess.Popen(f'"{os.path.dirname(sys.argv[0])}\\ANK_OEMSERVE\\OEM_ANKCORE.exe" "{file_path}"',
-                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, creationflags=subprocess.CREATE_NO_WINDOW)
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, cwd=f'{os.path.dirname(sys.argv[0])}\\ANK_OEMSERVE', creationflags=subprocess.CREATE_NO_WINDOW)
         stdout, stderr = process.communicate()
         return float(stderr) >= 0.9
     def api_scan(self, file):
@@ -1207,65 +1212,65 @@ for root_jiazai, dirs, files in os.walk(data_path):
         file_path = os.path.join(root_jiazai, file).replace("/", "\\")
         rules.load_rules(file_path)
 data_path = appdata_path + "\\Local\\mlnet-resources\\Text\\Sswe"
-shutil.copy2(jzhsd_dir + "\\sentiment.emd", appdata_path + "\\Local\\mlnet-resources\\Text\\Sswe\\sentiment.emd")
+shutil.copy2(jzhsd_dir + "\\sentiment.emd", appdata_path.replace("\\Roaming", "") + "\\Local\\mlnet-resources\\Text\\Sswe\\sentiment.emd")
 def AntiVirus_file(f_path, online=online):
-    print(f_path.replace("/", "\\"))
-    print(Viruses_White_exe)
-    print(f_path.replace("/", "\\") in Viruses_White_exe)
-    if f_path.replace("/", "\\") in Viruses_White_exe:
-        return False
-    pe_scan = AntivirusEngine.pe_scan(f_path)
-    f_da = open(f_path, "rb")
-    f_data = f_da.read()
-    f_da.close()
     try:
-        if AntivirusEngine.scan_ANK(f_path):
-            return True
-    except:
-        pass
-    try:
-        if AntivirusEngine.sign_scan(f_path):
-            return True
-    except:
-        pass
-    try:
-        if pe_scan:
-            return True
-    except:
-        pass
-    try:
-        if AntivirusEngine.AdobeMalwareClassifier_scan(f_path):
-            return True
-    except:
-        pass
-    try:
-        if model.start_scan(f_data):
-            return True
-    except:
-        pass
-    try:
-        if rules.start_scan(f_path):
-            return True
-    except:
-        pass
-    if online:
+        if f_path.replace("/", "\\") in Viruses_White_exe:
+            return False
+        pe_scan = AntivirusEngine.pe_scan(f_path)
+        f_da = open(f_path, "rb")
+        f_data = f_da.read()
+        f_da.close()
         try:
-            if AntivirusEngine.api_scan(f_path):
+            if AntivirusEngine.scan_ANK(f_path):
                 return True
         except:
             pass
         try:
-            if AntivirusEngine.start_scan(f_path):
+            if AntivirusEngine.sign_scan(f_path):
                 return True
         except:
             pass
         try:
-            if AntivirusEngine.scan_file_sha256(f_path):
+            if pe_scan:
                 return True
         except:
             pass
-        return False
-    else:
+        try:
+            if AntivirusEngine.AdobeMalwareClassifier_scan(f_path):
+                return True
+        except:
+            pass
+        try:
+            if model.start_scan(f_data):
+                return True
+        except:
+            pass
+        try:
+            if rules.start_scan(f_path):
+                return True
+        except:
+            pass
+        if online:
+            try:
+                if AntivirusEngine.api_scan(f_path):
+                    return True
+            except:
+                pass
+            try:
+                if AntivirusEngine.start_scan(f_path):
+                    return True
+            except:
+                pass
+            try:
+                if AntivirusEngine.scan_file_sha256(f_path):
+                    return True
+            except:
+                pass
+            return False
+        else:
+            return False
+    except:
         return False
 def AntiVirus_files(f_paths2, online=online):
     f_paths = []
