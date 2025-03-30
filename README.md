@@ -2,7 +2,7 @@
 
 ## Readme Language
 
-简体中文 : https://github.com/M720111120126/JZHSD/blob/main/README_zh_CN.md
+简体中文 : https://github.com/M720111120126/JZHSD/blob/master/README_zh_CN.md
 
 ## Requirements
 

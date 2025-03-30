@@ -4,14 +4,14 @@
 
 该项目包含以下第三方软件的组件：
 
-- [PYAS] (https://github.com/87owo/PYAS)
+- [PYAS](https://github.com/87owo/PYAS)
   版权所有 © 2020-2025 87owo (PYAS Security)
   根据MIT许可证获取授权: https://github.com/87owo/PYAS/blob/main/LICENSE.md
 
 
 ## 其他语言
 
-English : https://github.com/M720111120126/JZHSD/blob/main/README.md
+English : https://github.com/M720111120126/JZHSD/blob/master/README.md
 
 ## 第三方库
 
